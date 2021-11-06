@@ -14,6 +14,7 @@ export const Brush = React.memo(({ brush }: { brush: TLBounds }): JSX.Element | 
           y={0}
           width={brush.width}
           height={brush.height}
+          aria-label="brush"
         />
       </SVGContainer>
     </Container>
