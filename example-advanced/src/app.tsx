@@ -15,6 +15,11 @@ import './styles.css'
 import styled from 'stitches.config'
 import { Api } from 'state/api'
 
+// Instead of providing the implementation for each events here
+// usage of state machines promotes loose coupling & separates
+// the actual logic to one place i.e., state machine
+// info => contains useful information related to mouse, wheel & touch events
+// state/actions/selection/setHoveredShape.ts => provides the actual action
 const onHoverShape: TLPointerEventHandler = (info, e) => {
   machine.send('HOVERED_SHAPE', info)
 }

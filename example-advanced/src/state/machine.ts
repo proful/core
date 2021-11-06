@@ -48,6 +48,7 @@ export const machine = createState({
             DELETED: 'deleteSelectedShapes',
             UNDO: 'undo',
             REDO: 'redo',
+            // state/actions/selection/setHoveredShape.ts
             HOVERED_SHAPE: 'setHoveredShape',
             UNHOVERED_SHAPE: 'clearHoveredShape',
             POINTED_CANVAS: [
@@ -233,6 +234,7 @@ export const machine = createState({
           },
         },
         creating: {
+          // Create a new Box & store in page.shapes
           onEnter: ['createBoxShape', 'setSnapshot'],
           on: {
             TOGGLED_MODIFIER: 'transformSelectedShapes',
@@ -306,5 +308,5 @@ export const machine = createState({
       return payload.shiftKey
     },
   },
-  actions,
+  actions, // all the functionality is present here
 })
