@@ -10,6 +10,7 @@ export const machine = createState({
   data: INITIAL_DATA,
   onEnter: ['restoreSavedDocument', 'updateBoundShapes'],
   on: {
+    // triggered from toolbar it can be due to clicking on 'select', 'arrow' or 'box'
     SELECTED_TOOL: { to: (_, payload) => payload.name },
     STARTED_POINTING: ['setInitialPoint', 'setSnapshot'],
     PANNED: 'panCamera',
@@ -48,13 +49,13 @@ export const machine = createState({
             DELETED: 'deleteSelectedShapes',
             UNDO: 'undo',
             REDO: 'redo',
-            // state/actions/selection/setHoveredShape.ts
+            // action => state/actions/selection/setHoveredShape.ts
             HOVERED_SHAPE: 'setHoveredShape',
             UNHOVERED_SHAPE: 'clearHoveredShape',
             POINTED_CANVAS: [
               {
                 unless: 'isPressingShiftKey',
-                do: 'deselectAllShapes',
+                do: 'deselectAllShapes', // clear all shape selection if clicked on the canvas
               },
               {
                 to: 'pointing.canvas',
@@ -86,10 +87,10 @@ export const machine = createState({
             canvas: {
               on: {
                 STOPPED_POINTING: {
-                  to: 'select.idle',
+                  to: 'select.idle',// normal state
                 },
                 MOVED_POINTER: {
-                  to: 'brushSelecting',
+                  to: 'brushSelecting',// start brushing or allow multiple selection
                 },
               },
             },
@@ -196,9 +197,13 @@ export const machine = createState({
             },
           },
         },
+        // selecting multiple elements
+        // https://github.com/proful/tldraw-core-docs/blob/main/gif/02-brushing.gif
         brushSelecting: {
-          onExit: 'clearBrush',
+          onExit: 'clearBrush', // set pageState.brush as undefined
           on: {
+            // update pageState.brush with brush rectangle dimension
+            // update pageState.selectedIds based on what brush is touching
             MOVED_POINTER: 'updateBrush',
             PANNED: 'updateBrush',
             CANCELLED: {
@@ -245,8 +250,8 @@ export const machine = createState({
               to: 'select',
             },
             STOPPED_POINTING: {
-              do: 'addToHistory',
-              to: 'select',
+              do: 'addToHistory', // helpful for undo
+              to: 'select', // by this time box is created
             },
           },
         },

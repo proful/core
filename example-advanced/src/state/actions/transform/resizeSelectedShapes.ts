@@ -5,6 +5,11 @@ import type { Action } from 'state/constants'
 import { getPagePoint } from 'state/helpers'
 import { mutables } from 'state/mutables'
 
+// Scenario 1:
+// After creating box by clicking on canvas & stretching around to see the shape size
+// Simple case: first point is the top left & drag till bottom right
+// But it can get complicated there will be various direction you can stretch
+// https://github.com/proful/tldraw-core-docs/blob/main/gif/01-create-box.gif
 export const resizeSelectedShapes: Action = (data, payload: TLPointerInfo) => {
   const { pointedBoundsHandleId, initialPoint, snapshot } = mutables
   const { selectedIds } = data.pageState
@@ -46,6 +51,7 @@ export const resizeSelectedShapes: Action = (data, payload: TLPointerInfo) => {
       scaleY < 0
     )
 
+    // Based on updated relativeBoundingBox, calculate box's point & size
     getShapeUtils(shape).transform(shape, relativeBoundingBox, initialShape, [scaleX, scaleY])
   })
 }

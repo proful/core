@@ -184,6 +184,10 @@ export default function App({ onMount }: AppProps): JSX.Element {
   const hideBounds = appState.isInAny('transformingSelection', 'translating', 'creating')
 
   return (
+    // Renderer is responsible for creating & rendering JSX Elements for shapes
+    // You can customize it by passing shape utils (collection of shapes), page & page state
+    // This imperative style allows TLDraw core to implement few performance optimization
+    // At this moment it is not possible to use declarative style such as <Box /> <Arrow />
     <AppContainer>
       <Renderer
         shapeUtils={shapeUtils} // Required
