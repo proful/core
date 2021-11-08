@@ -27,8 +27,10 @@ export class BoxUtil extends CustomShapeUtil<T, E> {
     }
   }
 
+  // Every shape needs to implement getBounds slightly differently
   getBounds = (shape: T) => {
     const bounds = Utils.getFromCache(this.boundsCache, shape, () => {
+      // only box have size property, for e.g., circle doesn't have size property
       const [width, height] = shape.size
 
       return {

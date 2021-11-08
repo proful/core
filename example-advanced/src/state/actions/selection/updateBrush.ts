@@ -24,7 +24,13 @@ export const updateBrush: Action = (data, payload: TLPointerInfo) => {
 
   const hits = Object.values(data.page.shapes)
     .filter((shape) => {
+      // Different shape (box, arrow, ecllipse) has different bounding box
+      // getShapeUtils(shape) returns BoxUtil or ArrowUtil this needs to be implemented
       const shapeBounds = getShapeUtils(shape).getBounds(shape)
+
+      // boundsContain => shape contained inside brush selection
+      // boundsCollide => brush selection just touching or intersecting with shape
+      // if you press cmd + brush it only select contained not collision
       return (
         Utils.boundsContain(brushBounds, shapeBounds) ||
         (!payload.metaKey && Utils.boundsCollide(brushBounds, shapeBounds))
@@ -33,8 +39,10 @@ export const updateBrush: Action = (data, payload: TLPointerInfo) => {
     .map((shape) => shape.id)
 
   if (payload.shiftKey) {
+    // Add more shapes to selection if dragging brush by pressing shift
     data.pageState.selectedIds = Array.from(new Set([...initialSelectedIds, ...hits]).values())
   } else {
+    //
     data.pageState.selectedIds = hits
   }
 }
