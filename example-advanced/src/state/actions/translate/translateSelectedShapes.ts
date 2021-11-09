@@ -5,10 +5,13 @@ import { Action, CustomBinding, SNAP_DISTANCE } from 'state/constants'
 import { getPagePoint } from 'state/helpers'
 import { mutables } from 'state/mutables'
 
+// https://github.com/proful/tldraw-core-docs/blob/main/gif/04-translating.gif
+// Dragging shape
 export const translateSelectedShapes: Action = (data, payload: TLPointerInfo) => {
   const { initialPoint, viewport, snapshot, snapInfo } = mutables
   const { selectedIds } = data.pageState
 
+  // https://github.com/proful/tldraw-core-docs/blob/main/gif/05-translating-delta.gif
   let delta = Vec.sub(getPagePoint(payload.point, data.pageState), initialPoint)
 
   if (payload.shiftKey) {

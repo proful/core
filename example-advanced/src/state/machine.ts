@@ -54,7 +54,7 @@ export const machine = createState({
             UNHOVERED_SHAPE: 'clearHoveredShape',
             POINTED_CANVAS: [
               {
-                unless: 'isPressingShiftKey',
+                unless: 'isPressingShiftKey', // if shift key is pressed, don't clear the selections
                 do: 'deselectAllShapes', // clear all shape selection if clicked on the canvas
               },
               {
@@ -148,6 +148,7 @@ export const machine = createState({
             },
           },
         },
+        // Dragging of shapes
         translating: {
           onEnter: 'setSnapInfo',
           onExit: ['clearSnapInfo', 'clearSnapLines', 'clearIsCloning'],
@@ -240,6 +241,7 @@ export const machine = createState({
         },
         creating: {
           // Create a new Box & store in page.shapes
+          // setSnapshot => clone current state
           onEnter: ['createBoxShape', 'setSnapshot'],
           on: {
             TOGGLED_MODIFIER: 'transformSelectedShapes',

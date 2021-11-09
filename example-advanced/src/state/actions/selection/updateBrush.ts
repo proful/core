@@ -20,6 +20,7 @@ export const updateBrush: Action = (data, payload: TLPointerInfo) => {
 
   data.pageState.brush = brushBounds
 
+  // snapshot => another copy of page & pageState
   const initialSelectedIds = snapshot.pageState.selectedIds
 
   const hits = Object.values(data.page.shapes)
@@ -40,6 +41,7 @@ export const updateBrush: Action = (data, payload: TLPointerInfo) => {
 
   if (payload.shiftKey) {
     // Add more shapes to selection if dragging brush by pressing shift
+    // unique ids between initialSelectedIds & hits
     data.pageState.selectedIds = Array.from(new Set([...initialSelectedIds, ...hits]).values())
   } else {
     //
